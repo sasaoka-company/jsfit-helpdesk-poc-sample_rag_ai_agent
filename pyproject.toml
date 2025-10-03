@@ -1,0 +1,23 @@
+[project]
+name = "sample_rag_ai-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.66.0",
+    "fastapi>=0.117.1",
+    "fastmcp>=2.12.3",
+    "google-generativeai>=0.8.5",
+    "langchain>=0.3.27",
+    "langchain-anthropic>=0.3.19",
+    "langchain-community>=0.3.29",
+    "langchain-google-genai>=2.0.10",
+    "langchain-ollama>=0.3.8",
+    "langchain-openai>=0.3.32",
+    "langchain-tavily>=0.2.11",
+    "langgraph>=0.6.6",
+    "openai>=1.106.1",
+    "python-dotenv>=1.1.1",
+    "uvicorn>=0.36.0",
+]

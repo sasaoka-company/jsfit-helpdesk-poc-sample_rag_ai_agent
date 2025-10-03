@@ -1,0 +1,134 @@
+# agent_core.py
+from dotenv import load_dotenv
+from typing import List
+from langchain_core.messages import BaseMessage, AIMessage
+from langchain_core.tools import Tool
+from langchain_tavily import TavilySearch
+from langgraph.prebuilt import create_react_agent
+from langchain.chat_models import init_chat_model
+from langchain_ollama import ChatOllama
+from mcp_client import create_mcp_tools
+from logger import get_logger
+
+# ロガー設定
+logger = get_logger(__name__)
+
+# 使用するLLMモデル
+LLM_MODEL = "llama3.1:8b"
+# LLM_MODEL = "gpt-oss:20b"  # 20Bパラメータモデル - 処理時間が長いため注意
+# LLM_MODEL = "openai:gpt-5-nano"
+# LLM_MODEL = "google_genai:gemini-2.5-flash-lite"
+# LLM_MODEL = "anthropic:claude-3-haiku-20240307"
+
+# ローカルモデル（Ollama）の識別子
+# Ollamaライブラリに含まれるモデルのプレフィックス
+OLLAMA_MODEL_PREFIX = ("llama3.1", "gpt-oss", "mistral")  # 必要に応じて追加
+
+
+def create_agent(model_name: str = LLM_MODEL):
+    """
+    指定したモデルによりエージェントを構築
+
+    Args:
+        model_name: 使用するLLMモデル名
+    """
+    try:
+        # APIキー読み込み
+        load_dotenv(override=True)
+
+        # モデル初期化（ollama_sample.pyと同じアプローチ）
+        if model_name.startswith(OLLAMA_MODEL_PREFIX):
+            # Ollamaのローカルモデルの場合はChatOllamaを使用
+            model = ChatOllama(model=model_name, temperature=0.5)
+            logger.info(f"Ollamaモデルを初期化しました: {model_name}")
+        else:
+            # その他のモデル（Anthropic, OpenAI, Google等）
+            model = init_chat_model(model_name)
+            logger.info(f"外部モデルを初期化しました: {model_name}")
+
+        # Web検索ツール（ツール利用のサンプルとして実装）
+        web_search_tool = TavilySearch(max_results=5)
+
+        # MCPクライアントツール準備（常にSTDIOとStreamable HTTP両方の通信方式を同時使用）
+        logger.info(">>> 両方のMCP通信方式（STDIO + Streamable HTTP）を使用")
+        mcp_tools: List[Tool] = create_mcp_tools()
+
+        # 利用するツール一覧
+        tools = [web_search_tool] + mcp_tools
+
+        # プロンプトを動的に生成（MCPツールの実際の名前と説明を使用）
+        base_prompt = (
+            "社内資料に基づき、業務の質問に根拠付きで回答してください。"
+            "必要に応じてネットも検索してください。"
+        )
+
+        # MCPツールの情報を動的に追加
+        mcp_tools_info = []
+        for tool in tools:
+            # web_search_tool以外のMCPツールを対象にする
+            if hasattr(tool, "func") and hasattr(tool.func, "_mcp_meta"):
+                transport = tool.func._mcp_meta.get("transport", "unknown")
+                transport_label = {
+                    "stdio": "標準入出力方式",
+                    "http": "Streamable HTTP方式",
+                }.get(transport, transport)
+                mcp_tools_info.append(
+                    f"- {tool.name}: {tool.description} ({transport_label})"
+                )
+
+        if mcp_tools_info:
+            prompt = (
+                base_prompt
+                + "\n複数のMCPツールが利用可能な場合は、それぞれの特徴に応じて適切なツールを選択してください。\n"
+                + "\n".join(mcp_tools_info)
+            )
+        else:
+            prompt = base_prompt
+
+        # エージェント作成
+        agent = create_react_agent(
+            model=model,
+            tools=tools,
+            prompt=prompt,
+        )
+
+        logger.info(f">>> エージェント作成完了。利用可能ツール数: {len(tools)}")
+        return agent
+
+    except Exception as e:
+        logger.error(f"エージェント作成中にエラーが発生しました: {e}")
+        raise
+
+
+def create_default_agent():
+    """
+    標準設定でエージェントを作成
+    常にSTDIOとStreamable HTTP両方のMCPクライアントを同時使用
+    """
+    return create_agent(LLM_MODEL)
+
+
+def run_agent(agent, messages: List[BaseMessage]) -> AIMessage:
+    """
+    エージェントにメッセージを投げて最終的な応答だけ返す
+
+    Args:
+        agent: LangGraphエージェントインスタンス
+        messages: 送信するメッセージのリスト
+
+    Returns:
+        AIMessage: エージェントからの最終応答メッセージ
+
+    使い方:
+        # FastAPI や CLI など「確定応答だけ欲しい」場合に利用する
+        ai_message = run_agent(agent, messages)
+        logger.info(ai_message.content)
+    """
+    try:
+        last = None
+        for s in agent.stream({"messages": messages}, stream_mode="values"):
+            last = s["messages"]
+        return last[-1]  # AIMessage
+    except Exception as e:
+        logger.error(f"エージェント実行中にエラーが発生しました: {e}")
+        raise
