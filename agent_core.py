@@ -8,7 +8,7 @@ from langchain_core.tools import Tool
 from langgraph.prebuilt import create_react_agent
 from langchain.chat_models import init_chat_model
 from langchain_ollama import ChatOllama
-from mcp_client_fastmcp import create_mcp_tools
+from mcp_client_langchain_adapters.mcp_tools_factory import create_mcp_tools
 from config import LLM_MODEL, OLLAMA_MODEL_PREFIX
 from logger import get_logger
 
@@ -16,7 +16,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 
-def create_agent(model_name: str = LLM_MODEL):
+async def create_agent(model_name: str = LLM_MODEL):
     """
     指定したモデルによりエージェントを構築
 
@@ -40,9 +40,9 @@ def create_agent(model_name: str = LLM_MODEL):
         # # Web検索ツール（ツール利用のサンプルとして実装）
         # web_search_tool = TavilySearch(max_results=5)
 
-        # MCPクライアントツール準備（常にSTDIOとStreamable HTTP両方の通信方式を同時使用）
-        logger.info(">>> 両方のMCP通信方式（STDIO + Streamable HTTP）を使用")
-        mcp_tools: List[Tool] = create_mcp_tools()
+        # MCPクライアントツール準備（langchain-mcp-adapters使用）
+        logger.info(">>> langchain-mcp-adapters を使用してMCPツールを作成")
+        mcp_tools: List[Tool] = await create_mcp_tools()
 
         # # 利用するツール一覧
         # tools = [web_search_tool] + mcp_tools
@@ -94,17 +94,17 @@ def create_agent(model_name: str = LLM_MODEL):
         raise
 
 
-def create_default_agent():
+async def create_default_agent():
     """
     標準設定でエージェントを作成
-    常にSTDIOとStreamable HTTP両方のMCPクライアントを同時使用
+    langchain-mcp-adapters を使用してSTDIOとStreamable HTTP両方のMCPクライアントを同時使用
     """
-    return create_agent(LLM_MODEL)
+    return await create_agent(LLM_MODEL)
 
 
-def run_agent(agent, messages: List[BaseMessage]) -> AIMessage:
+async def run_agent(agent, messages: List[BaseMessage]) -> AIMessage:
     """
-    エージェントにメッセージを投げて最終的な応答だけ返す
+    エージェントにメッセージを投げて最終的な応答だけ返す（非同期版）
 
     Args:
         agent: LangGraphエージェントインスタンス
@@ -115,12 +115,13 @@ def run_agent(agent, messages: List[BaseMessage]) -> AIMessage:
 
     使い方:
         # FastAPI や CLI など「確定応答だけ欲しい」場合に利用する
-        ai_message = run_agent(agent, messages)
+        ai_message = await run_agent(agent, messages)
         logger.info(ai_message.content)
     """
     try:
         last = None
-        for s in agent.stream({"messages": messages}, stream_mode="values"):
+        # astream を使用して非同期ストリーム処理
+        async for s in agent.astream({"messages": messages}, stream_mode="values"):
             last = s["messages"]
         return last[-1]  # AIMessage
     except Exception as e:

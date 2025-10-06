@@ -19,9 +19,9 @@ app = FastAPI(title="AIエージェントサーバー")
 agent = None
 
 
-def get_agent():
+async def get_agent():
     """
-    エージェントを遅延初期化で取得
+    エージェントを遅延初期化で取得（非同期版）
 
     最初の呼び出し時のみcreate_agent()を実行し、以降は同じインスタンスを再利用。
     これにより：
@@ -32,7 +32,7 @@ def get_agent():
     global agent
     if agent is None:
         # 最初のリクエスト時のみ実行される（Singleton Pattern）
-        agent = create_agent()
+        agent = await create_agent()
     return agent
 
 
@@ -42,23 +42,23 @@ class QueryRequest(BaseModel):
 
 
 @app.post("/query")
-def query_endpoint(request: QueryRequest):
+async def query_endpoint(request: QueryRequest):
     start_time = time.time()
     logger.info(f"クエリ処理開始: {request.query}")
 
     try:
         # エージェントを遅延取得（初回のみ初期化処理が実行される）
         agent_start = time.time()
-        current_agent = get_agent()
+        current_agent = await get_agent()
         agent_time = time.time() - agent_start
         logger.info(f"エージェント取得完了: {agent_time:.2f}秒")
 
         # ユーザーのクエリをHumanMessageに変換
         messages = [HumanMessage(content=request.query)]
 
-        # エージェントで回答を生成
+        # エージェントで回答を生成（非同期処理でMCPサーバーからの応答を適切に待つ）
         generation_start = time.time()
-        ai_message = run_agent(current_agent, messages)
+        ai_message = await run_agent(current_agent, messages)
         generation_time = time.time() - generation_start
 
         total_time = time.time() - start_time
