@@ -16,35 +16,33 @@ MCP サーバーとの標準入出力(STDIO)方式と HTTP 方式の両方を同
 
 ## セットアップ
 
-### 1. Git設定
+### 1. Git 設定
 
 リポジトリをクローンした後、以下のコマンドを実行してください：
 
 ```bash
 git config --global core.autocrlf false
 ```
-※上記は、チェックアウト時、コミット時に改行コードを変更しない設定です（.gitattributesのままになります）
 
+※上記は、チェックアウト時、コミット時に改行コードを変更しない設定です（.gitattributes のままになります）
 
 ### 2. 仮想環境（.venv）の作成
 
-仮想環境（`.venv`ディレクトリ）はGitHubリポジトリに登録されていないため、pullした後に仮想環境を作成する必要がある。
+仮想環境（`.venv`ディレクトリ）は GitHub リポジトリに登録されていないため、pull した後に仮想環境を作成する必要がある。
 
 ```コマンド（Windows Power Shell）
 uv venv --python 3.12
 ```
 
-※ `uv init`コマンドの実行は不要（pyproject.tomlの作成などは作成済みのものがGitHubにプッシュされている）
+※ `uv init`コマンドの実行は不要（pyproject.toml の作成などは作成済みのものが GitHub にプッシュされている）
 
-
-### 3.  .python-version の更新
+### 3. .python-version の更新
 
 ```コマンド（Windows Power Shell）
 uv python pin 3.12
 ```
 
-※ `.python-version`が更新される。GitHubに登録されていない場合は新規作成される。
-
+※ `.python-version`が更新される。GitHub に登録されていない場合は新規作成される。
 
 ### 4. 依存関係のインストール
 
@@ -87,13 +85,13 @@ print(response.content)
 
 ### STDIO 方式
 
-- **ファイル**: `mcp_client/stdio_client.py`
+- **ファイル**: `mcp_client_fastmcp/stdio_client.py`
 - **特徴**: プロセス間通信による直接的な接続、高速
 - **用途**: ローカルファイル（docx, pdf）への直接アクセス
 
 ### HTTP 方式
 
-- **ファイル**: `mcp_client/http_client.py`
+- **ファイル**: `mcp_client_fastmcp/http_client.py`
 - **特徴**: HTTP API 経由のリモートアクセス、スケーラブル
 - **用途**: 分散環境での MCP サーバー接続
 
@@ -111,8 +109,8 @@ print(response.content)
 
 各クライアントモジュール内の定数を変更してください：
 
-- `mcp_client/stdio_client.py`: STDIO 設定
-- `mcp_client/http_client.py`: HTTP 設定
+- `mcp_client_fastmcp/stdio_client.py`: STDIO 設定
+- `mcp_client_fastmcp/http_client.py`: HTTP 設定
 
 ## 📚 ドキュメント
 

@@ -4,7 +4,9 @@ HTTP MCPクライアントのテストスクリプト
 """
 
 import asyncio
-from mcp_client.http_client import (
+import time
+
+from mcp_client_fastmcp.http_client import (
     HttpMCPClient,
     http_mcp_query,
     create_http_mcp_tools,

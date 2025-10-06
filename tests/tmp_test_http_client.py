@@ -1,6 +1,8 @@
 import sys
 import traceback
-from mcp_client.http_client import HttpMCPClient
+import asyncio
+
+from mcp_client_fastmcp.http_client import HttpMCPClient
 
 try:
     print("Initializing HttpMCPClient with server_url=http://127.0.0.1:8001/mcp")

@@ -6,7 +6,7 @@
 import asyncio
 from langchain_core.messages import HumanMessage
 from agent_core import create_agent, create_default_agent
-from mcp_client import create_mcp_client_tools, create_dual_mcp_tools
+from mcp_client_fastmcp import create_mcp_client_tools, create_dual_mcp_tools
 
 
 def test_dual_mcp_tools():

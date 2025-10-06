@@ -1,5 +1,5 @@
-from mcp_client.stdio_client import create_stdio_mcp_tools
-from mcp_client.http_client import create_http_mcp_tools
+from mcp_client_fastmcp.stdio_client import create_stdio_mcp_tools
+from mcp_client_fastmcp.http_client import create_http_mcp_tools
 
 s = create_stdio_mcp_tools()
 print("STDIO ->", s.name, "|", s.description)

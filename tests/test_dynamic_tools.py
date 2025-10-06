@@ -12,11 +12,11 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    from mcp_client.stdio_client import (
+    from mcp_client_fastmcp.stdio_client import (
         get_stdio_mcp_tools_info,
         create_stdio_mcp_tools,
     )
-    from mcp_client.http_client import (
+    from mcp_client_fastmcp.http_client import (
         get_http_mcp_tools_info,
         create_http_mcp_tools,
     )

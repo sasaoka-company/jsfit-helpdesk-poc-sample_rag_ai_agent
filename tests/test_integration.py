@@ -3,7 +3,8 @@
 統合MCP クライアントのテストスクリプト
 """
 
-from mcp_client import create_mcp_client_tools, SUPPORTED_TRANSPORTS
+from agent_core import create_agent, run_agent
+from mcp_client_fastmcp import create_mcp_client_tools, SUPPORTED_TRANSPORTS
 
 
 def test_integration():

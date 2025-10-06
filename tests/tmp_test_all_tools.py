@@ -1,4 +1,4 @@
-from mcp_client import create_mcp_client_tools
+from mcp_client_fastmcp import create_mcp_client_tools
 
 tools = create_mcp_client_tools()
 for t in tools:

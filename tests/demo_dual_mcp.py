@@ -8,7 +8,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from mcp_client import create_mcp_client_tools
+from mcp_client_fastmcp import create_mcp_client_tools
 import logger
 
 

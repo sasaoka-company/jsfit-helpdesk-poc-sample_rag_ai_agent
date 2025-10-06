@@ -3,7 +3,7 @@
 HTTP MCPクライアントの同期テストスクリプト
 """
 
-from mcp_client.http_client import http_mcp_query, create_http_mcp_tools
+from mcp_client_fastmcp.http_client import http_mcp_query, create_http_mcp_tools
 
 
 def test_function_interface():

@@ -8,7 +8,7 @@ FastMCP を使用した Streamable HTTP 方式の MCP クライアントの実�
 
 ### 1. HttpMCPClient クラス
 
-- **ファイル**: `mcp_client/http_client.py`
+- **ファイル**: `mcp_client_fastmcp/http_client.py`
 - **機能**: FastMCP の `Client(url)` 方式を使用した HTTP 通信
 - **特徴**:
   - 非同期/同期の両方の実行方式をサポート
@@ -29,7 +29,7 @@ HTTP_TIMEOUT = 30
 #### a) 直接クラス使用
 
 ```python
-from mcp_client.http_client import HttpMCPClient
+from mcp_client_fastmcp.http_client import HttpMCPClient
 
 # 設定を指定して初期化
 config = {"server_url": "http://127.0.0.1:8001/mcp"}
@@ -45,7 +45,7 @@ result = client.query_sync("セキュリティについて")
 #### b) 関数型インターフェース
 
 ```python
-from mcp_client.http_client import http_mcp_query
+from mcp_client_fastmcp.http_client import http_mcp_query
 
 # デフォルト設定で実行
 result = http_mcp_query("セキュリティについて")
@@ -57,7 +57,7 @@ result = http_mcp_query("セキュリティについて", "http://127.0.0.1:8001
 #### c) LangChain ツール形式
 
 ```python
-from mcp_client.http_client import create_http_mcp_tools
+from mcp_client_fastmcp.http_client import create_http_mcp_tools
 
 tools = create_http_mcp_tools()
 # 複数のツールが返される可能性があります
@@ -68,7 +68,7 @@ for tool in tools:
 #### d) 統合インターフェース
 
 ```python
-from mcp_client import create_mcp_tools
+from mcp_client_fastmcp import create_mcp_tools
 
 # STDIO + HTTP両方のツールを作成
 tools = create_mcp_tools()
@@ -115,7 +115,7 @@ FastMCP ライブラリの `Client(url)` コンストラクターを使用して
 
 ### 既存システムとの統合
 
-- `mcp_client/__init__.py` で統一 API を提供
+- `mcp_client_fastmcp/__init__.py` で統一 API を提供
 - STDIO クライアントとの統一インターフェース維持
 - 複数ツールの同時作成に対応
 

@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    from mcp_client import (
+    from mcp_client_fastmcp import (
         create_mcp_client_tools,
         create_dual_mcp_tools,
         SUPPORTED_TRANSPORTS,
@@ -72,7 +72,7 @@ def test_individual_tools():
     print("=== 個別ツールテスト ===")
 
     try:
-        from mcp_client.stdio_client import create_stdio_mcp_tools
+        from mcp_client_fastmcp.stdio_client import create_stdio_mcp_tools
 
         print("1. STDIOツール作成テスト")
         stdio_tool = create_stdio_mcp_tools()
@@ -81,7 +81,7 @@ def test_individual_tools():
         print(f"  STDIOツール作成エラー: {e}")
 
     try:
-        from mcp_client.http_client import create_http_mcp_tools
+        from mcp_client_fastmcp.http_client import create_http_mcp_tools
 
         print("2. HTTPツール作成テスト")
         http_tool = create_http_mcp_tools(http_server_url="http://127.0.0.1:8000/mcp")

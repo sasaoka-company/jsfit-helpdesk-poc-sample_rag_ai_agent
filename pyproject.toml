@@ -13,6 +13,7 @@ dependencies = [
     "langchain-anthropic>=0.3.19",
     "langchain-community>=0.3.29",
     "langchain-google-genai>=2.0.10",
+    "langchain-mcp-adapters>=0.1.11",
     "langchain-ollama>=0.3.8",
     "langchain-openai>=0.3.32",
     "langchain-tavily>=0.2.11",

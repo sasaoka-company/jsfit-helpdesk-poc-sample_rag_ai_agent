@@ -1,5 +1,5 @@
-from mcp_client.http_client import create_http_mcp_tools
-from mcp_client import create_mcp_client_tools
+from mcp_client_fastmcp.http_client import create_http_mcp_tools
+from mcp_client_fastmcp import create_mcp_client_tools
 
 print("Testing create_http_mcp_client_tool (explicit server_url=8001)")
 try:

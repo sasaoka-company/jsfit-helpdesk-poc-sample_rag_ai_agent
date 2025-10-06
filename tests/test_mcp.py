@@ -11,15 +11,15 @@ def test_imports():
     """インポートをテスト"""
     print("=== インポートテスト ===")
     try:
-        from mcp_client.mcp_tools_factory import create_mcp_tools
+        from mcp_client_fastmcp.mcp_tools_factory import create_mcp_tools
 
         print("✓ mcp_tools_factory モジュールのインポート成功")
 
-        from mcp_client.stdio_client import create_stdio_mcp_tools
+        from mcp_client_fastmcp.stdio_client import create_stdio_mcp_tools
 
         print("✓ stdio_client モジュールのインポート成功")
 
-        from mcp_client.http_client import create_http_mcp_tools
+        from mcp_client_fastmcp.http_client import create_http_mcp_tools
 
         print("✓ http_client モジュールのインポート成功")
 
@@ -34,7 +34,7 @@ def test_stdio_tools():
     """STDIOツールの作成をテスト"""
     print("\n=== STDIOツール作成テスト ===")
     try:
-        from mcp_client.stdio_client import create_stdio_mcp_tools
+        from mcp_client_fastmcp.stdio_client import create_stdio_mcp_tools
 
         tools = create_stdio_mcp_tools()
         print(f"✓ STDIOツール作成成功: {len(tools)}個のツール")
@@ -51,7 +51,7 @@ def test_http_tools():
     """HTTPツールの作成をテスト"""
     print("\n=== HTTPツール作成テスト ===")
     try:
-        from mcp_client.http_client import create_http_mcp_tools
+        from mcp_client_fastmcp.http_client import create_http_mcp_tools
 
         tools = create_http_mcp_tools()
         print(f"✓ HTTPツール作成成功: {len(tools)}個のツール")
@@ -68,7 +68,7 @@ def test_dual_tools():
     """デュアルツールの作成をテスト"""
     print("\n=== デュアルツール作成テスト ===")
     try:
-        from mcp_client import create_mcp_tools
+        from mcp_client_fastmcp import create_mcp_tools
 
         tools = create_mcp_tools()
         print(f"✓ デュアルツール作成成功: {len(tools)}個のツール")
