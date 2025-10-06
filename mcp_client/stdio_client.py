@@ -11,18 +11,11 @@ from langchain.tools import Tool
 from fastmcp.client.transports import PythonStdioTransport
 from fastmcp import Client
 from .base_client import BaseMCPClient
+from config import STDIO_PYTHON_EXECUTABLE, STDIO_SERVER_SCRIPT
 from logger import get_logger
 
 # ロガー設定
 logger = get_logger(__name__)
-
-# MCPサーバー設定（標準入出力方式用）
-STDIO_PYTHON_EXECUTABLE = (
-    "D:\\vscode_projects\\sample_rag_mcp_server_stdio\\.venv\\Scripts\\python.exe"
-)
-STDIO_SERVER_SCRIPT = (
-    "D:\\vscode_projects\\sample_rag_mcp_server_stdio\\rag_mcp_server_stdio.py"
-)
 
 
 class StdioMCPClient(BaseMCPClient):

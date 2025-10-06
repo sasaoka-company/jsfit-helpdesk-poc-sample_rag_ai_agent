@@ -2,12 +2,57 @@
 
 MCP サーバーとの標準入出力(STDIO)方式と HTTP 方式の両方を同時使用する AI エージェントシステム
 
-## 🚀 主要機能
+## 機能
 
 - **デュアル MCP 接続**: STDIO + HTTP 両方の通信方式を同時使用
 - **自律的ツール選択**: エージェントが最適な MCP ツールを自動選択
 - **Web 検索統合**: Tavily 検索との連携
 - **FastAPI 提供**: REST エンドポイントでの利用
+
+## 環境要件
+
+- Python 3.12 以上
+- uv
+
+## セットアップ
+
+### 1. Git設定
+
+リポジトリをクローンした後、以下のコマンドを実行してください：
+
+```bash
+git config --global core.autocrlf false
+```
+※上記は、チェックアウト時、コミット時に改行コードを変更しない設定です（.gitattributesのままになります）
+
+
+### 2. 仮想環境（.venv）の作成
+
+仮想環境（`.venv`ディレクトリ）はGitHubリポジトリに登録されていないため、pullした後に仮想環境を作成する必要がある。
+
+```コマンド（Windows Power Shell）
+uv venv --python 3.12
+```
+
+※ `uv init`コマンドの実行は不要（pyproject.tomlの作成などは作成済みのものがGitHubにプッシュされている）
+
+
+### 3.  .python-version の更新
+
+```コマンド（Windows Power Shell）
+uv python pin 3.12
+```
+
+※ `.python-version`が更新される。GitHubに登録されていない場合は新規作成される。
+
+
+### 4. 依存関係のインストール
+
+pyproject.toml に定義された依存関係をインストール：
+
+```bash
+uv sync
+```
 
 ## 📋 使用例
 

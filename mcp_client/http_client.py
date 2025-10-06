@@ -8,14 +8,11 @@ import asyncio
 from typing import Dict, Any, List
 from langchain.tools import Tool
 from fastmcp import Client
+from config import HTTP_SERVER_URL, HTTP_TIMEOUT
 from logger import get_logger
 
 # ロガー設定
 logger = get_logger(__name__)
-
-# MCPサーバー設定（HTTP方式用）
-HTTP_SERVER_URL = "http://127.0.0.1:8001/mcp"  # デフォルトのHTTPサーバーURL
-HTTP_TIMEOUT = 30  # タイムアウト設定（秒）
 
 
 class HttpMCPClient:

@@ -6,7 +6,7 @@ MCPクライアント基底クラス
 
 import asyncio
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from logger import get_logger
 
 logger = get_logger(__name__)
@@ -83,15 +83,16 @@ class BaseMCPClient(ABC):
                 arguments = self._build_arguments(first_tool, query)
 
                 # ツール実行
-                self.logger.info(f">>> ツール実行開始: {tool_name} with query: {query}")
+                self.logger.info(f">>> ツール実行開始: {tool_name} クエリ： {query}")
                 result = await client.call_tool(name=tool_name, arguments=arguments)
                 self.logger.info(f">>> ツール実行完了: {tool_name}")
 
                 # 応答処理
                 response_text = self._extract_response_text(result)
                 self.logger.info(
-                    f">>> MCPサーバーからの応答取得成功 (文字数: {len(response_text)})"
+                    f">>> MCPサーバーからの応答取得成功 (文字数： {len(response_text)})"
                 )
+                self.logger.info(f">>> MCPサーバーからの応答： ({response_text})")
                 return response_text
 
         except Exception as e:

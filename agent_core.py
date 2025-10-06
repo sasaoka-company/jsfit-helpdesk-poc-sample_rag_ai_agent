@@ -3,26 +3,17 @@ from dotenv import load_dotenv
 from typing import List
 from langchain_core.messages import BaseMessage, AIMessage
 from langchain_core.tools import Tool
-from langchain_tavily import TavilySearch
+
+# from langchain_tavily import TavilySearch
 from langgraph.prebuilt import create_react_agent
 from langchain.chat_models import init_chat_model
 from langchain_ollama import ChatOllama
 from mcp_client import create_mcp_tools
+from config import LLM_MODEL, OLLAMA_MODEL_PREFIX
 from logger import get_logger
 
 # ロガー設定
 logger = get_logger(__name__)
-
-# 使用するLLMモデル
-LLM_MODEL = "llama3.1:8b"
-# LLM_MODEL = "gpt-oss:20b"  # 20Bパラメータモデル - 処理時間が長いため注意
-# LLM_MODEL = "openai:gpt-5-nano"
-# LLM_MODEL = "google_genai:gemini-2.5-flash-lite"
-# LLM_MODEL = "anthropic:claude-3-haiku-20240307"
-
-# ローカルモデル（Ollama）の識別子
-# Ollamaライブラリに含まれるモデルのプレフィックス
-OLLAMA_MODEL_PREFIX = ("llama3.1", "gpt-oss", "mistral")  # 必要に応じて追加
 
 
 def create_agent(model_name: str = LLM_MODEL):
@@ -46,15 +37,18 @@ def create_agent(model_name: str = LLM_MODEL):
             model = init_chat_model(model_name)
             logger.info(f"外部モデルを初期化しました: {model_name}")
 
-        # Web検索ツール（ツール利用のサンプルとして実装）
-        web_search_tool = TavilySearch(max_results=5)
+        # # Web検索ツール（ツール利用のサンプルとして実装）
+        # web_search_tool = TavilySearch(max_results=5)
 
         # MCPクライアントツール準備（常にSTDIOとStreamable HTTP両方の通信方式を同時使用）
         logger.info(">>> 両方のMCP通信方式（STDIO + Streamable HTTP）を使用")
         mcp_tools: List[Tool] = create_mcp_tools()
 
+        # # 利用するツール一覧
+        # tools = [web_search_tool] + mcp_tools
         # 利用するツール一覧
-        tools = [web_search_tool] + mcp_tools
+        tools = []
+        tools.extend(mcp_tools)
 
         # プロンプトを動的に生成（MCPツールの実際の名前と説明を使用）
         base_prompt = (

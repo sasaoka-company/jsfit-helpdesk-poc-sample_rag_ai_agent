@@ -55,7 +55,8 @@ logs/
 *.log
 
 # IDE and editor files
-.vscode/
+.vscode/settings.json
+.vscode/launch.json
 .idea/
 *.swp
 *.swo
