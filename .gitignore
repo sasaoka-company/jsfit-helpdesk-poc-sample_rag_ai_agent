@@ -1,6 +1,10 @@
+# =========================
 # Python-generated files
+# =========================
 __pycache__/
-*.py[cod]
+*.py[ocd]
+*.pyo
+*.pyd
 *$py.class
 *.so
 build/
@@ -22,20 +26,28 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# =========================
 # Virtual environments
-.venv
+# =========================
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Environment variables (contains API keys)
+# =========================
+# Environment variables
+# (often contain secrets or API keys)
+# =========================
+.env
 .env*
 .env.local
 .env.*.local
 
+# =========================
 # Testing and coverage
+# =========================
 .coverage
 .coverage.*
 .cache
@@ -49,23 +61,27 @@ coverage.xml
 *.py,cover
 .hypothesis/
 
+# =========================
 # Logs
+# =========================
+*.log
 log/
 logs/
-*.log
 
+# =========================
 # IDE and editor files
+# =========================
 .vscode/settings.json
 .vscode/launch.json
 .idea/
 *.swp
 *.swo
 *~
-
-# Python version management
 .python-version
 
+# =========================
 # OS-specific files
+# =========================
 .DS_Store
 .DS_Store?
 ._*
@@ -74,21 +90,42 @@ logs/
 ehthumbs.db
 Thumbs.db
 
+# =========================
 # Jupyter Notebook
+# =========================
 .ipynb_checkpoints
 
+# =========================
 # mypy type checker
+# =========================
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Temporary files
+# =========================
+# Documentation
+# =========================
+docs/_build/
+
+# =========================
+# Project-specific
+# =========================
+faiss_db/
+*.faiss
+*.pkl
+
+# =========================
+# Temporary and backup files
+# =========================
 tmp/
 temp/
 *.tmp
+*.temp
 *.bak
 *.backup
 
+# =========================
 # Local configuration files
+# =========================
 config.local.*
 .local/
